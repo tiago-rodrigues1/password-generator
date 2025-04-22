@@ -12,7 +12,11 @@ Indique o nome do autor e email.
 
 # Problems found or limitations
 
-<!-- TODO -->
+<!--
+Déborah Kelly Macedo de Sousa- deborahkmacedo@gmail.com
+
+Tiago Rodrigues dos Santos- tiago.rodrigues.709@ufrn.edu.br
+ -->
 
 Lista aqui os problemas encontrados (se houve algum) e as
 possíveis limitações do programa.
