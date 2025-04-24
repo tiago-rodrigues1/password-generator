@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <iomanip>
 
 //== Some default values.
 constexpr size_t default_pass_length{ 7 };
@@ -19,6 +20,12 @@ struct RunningOptions {
 
 /// Show help screen and error message
 void usage(std::string_view msg = "") {
+  
+  
+if (!msg.empty()) {
+  //std::cerr saida usada para erros
+  std::cerr << "Erro: " << msg << "\n\n";
+  }
   std::cout <<
         "Usage: passgen [<options>]\n"
         " --len n        Size of the password (default is 7).\n"
@@ -38,7 +45,11 @@ void usage(std::string_view msg = "") {
 
 /// Validates and parses the command line arguments
 void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
-  // TODO Add your code here.
+  for(size_t ct{ 0 }; ct<(size_t)argc; ++ct){
+    std::cout << ">> Arg[" << ct << "] = " << std::quoted(argv[ct]) << "\n";
+    }
+  
+    ///return 0;
 }
 
 std::string generate_password(const RunningOptions& run_options) {
