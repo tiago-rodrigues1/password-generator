@@ -45,9 +45,7 @@ if (!msg.empty()) {
 
 /// Validates and parses the command line arguments
 void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
-  for(size_t ct{ 0 }; ct<(size_t)argc; ++ct){
-    std::cout << ">> Arg[" << ct << "] = " << std::quoted(argv[ct]) << "\n";
-    }
+  
   
     ///return 0;
 }
