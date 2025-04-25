@@ -1,12 +1,14 @@
 #include <algorithm>
-#include <cctype>
 #include <cstdlib>
 #include <iostream>
 #include <random>
 #include <sstream>
 #include <string>
 #include <string_view>
-#include <iomanip>
+#include <array>
+
+#include "../include/enums/CharGroupEnum.h"
+#include "../include/ArgValidator.h"
 
 //== Some default values.
 constexpr size_t default_pass_length{ 7 };
@@ -15,39 +17,37 @@ constexpr size_t default_pass_length{ 7 };
 struct RunningOptions {
   size_t pass_length{ default_pass_length };  //!< Password length.
   bool show_password_strength{ false };
-  // TODO: Add the groups selected here!
+  std::array<bool, GROUPS_AMOUNT> activeGroups{};
 };
 
 /// Show help screen and error message
-void usage(std::string_view msg = "") {
-  
-  
-if (!msg.empty()) {
-  //std::cerr saida usada para erros
-  std::cerr << "Erro: " << msg << "\n\n";
-  }
-  std::cout <<
-        "Usage: passgen [<options>]\n"
-        " --len n        Size of the password (default is 7).\n"
-        "  -l, --lower        Add letter in [a-z].\n"
-        "  -u, --upper        Add letter in [A-Z].\n"
-        "  -d, --digits       Add letter in [0-9].\n"
-        "  -o, --logograms    Add letter in [#$%&@^`~].\n"
-        "  -p, --punctuation  Add letter in [.,;:].\n"
-        "  -q, --quotes       Add letter in [\\\"\\'].\n"
-        "  -s, --slashes      Add letter in [\\/|_-].\n"
-        "  -m, --math         Add letter in [*+!?=].\n"
-        "  -b, --braces       Add letter in [{}[]()].\n"
-        "  -a, --all-groups   Add letter from all the above groups.\n"
-        "  -t, --strength     Show password strength classification.\n"
-        "  -h, --help         Show this help screen.\n";
-}
+void usage(std::string_view msg = "") {}
 
 /// Validates and parses the command line arguments
 void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
-  
-  
-    ///return 0;
+  for (size_t i{0}; i < (size_t)argc; i++) {
+    if (argv[i] == "-h" || argv[i] == "--help") {
+     //TODO: print usage() 
+    } else if (argv[i] == "--len") {
+      int lengthValue{atoi(argv[i + 1])};
+      //validate length
+
+      run_options.pass_length = lengthValue;
+    } else if (argv[i] == "-t" || argv[i] == "--strength") {
+      //TODO: call password_quality()
+    } else {
+      //TODO: validate if arg is valid
+      ArgValidator validator{};
+      CharGroup result{validator.validateArg(argv[i])};
+
+      if (result == CharGroup::INVALID) {
+        //TODO: mostra erro
+      }
+
+      run_options.activeGroups[result] = 1;
+      
+    }
+  }
 }
 
 std::string generate_password(const RunningOptions& run_options) {
