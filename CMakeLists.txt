@@ -14,3 +14,7 @@ add_executable(${APP_NAME} src/main.cpp)
 target_compile_features( ${APP_NAME} PUBLIC cxx_std_17 )
 target_compile_options( ${APP_NAME} PRIVATE -Wall -pedantic -fstandalone-debug -O3)
 # target_compile_options( ${APP_NAME} PRIVATE -Wall -pedantic -fstandalone-debug -g)
+
+# Add library subfolder 
+add_subdirectory(zxcvbn-c)
+

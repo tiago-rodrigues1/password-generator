@@ -10,6 +10,9 @@
 #include "../include/enums/CharGroupEnum.h"
 #include "../include/ArgValidator.h"
 
+#include "zxcvbn.h"
+
+
 //== Some default values.
 constexpr size_t default_pass_length{ 7 };
 
@@ -43,7 +46,7 @@ void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
       if (result == CharGroup::INVALID) {
         //TODO: mostra erro
       }
-
+      
       run_options.activeGroups[result] = 1;
       
     }
@@ -59,7 +62,26 @@ std::string generate_password(const RunningOptions& run_options) {
 
 std::string password_quality(std::string_view password) {
   // TODO Add your code here
-  return "Weak";
+  //retorna a qualidade da senha atraves de uma função da lib zxcvbn
+  zxcvbn_match_t result = zxcvbn_match(password.data());
+  
+  switch (result.score){
+    std::cout >> "The quality of your password is: ";
+        case 0: 
+          return "Very weak";
+
+        case 1:
+          return "Weak";
+        
+        case 2:
+          return "Medium ";
+
+        case 3:
+          return "Good";  
+
+        case 4:
+          return "Excellent";
+  }
 }
 
 int main(int argc, char* argv[]) {
