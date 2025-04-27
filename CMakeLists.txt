@@ -7,6 +7,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 # Setting variables
 set(APP_NAME "passgen")
 
+# Add include dir
+include_directories(include)
+
 # Main App
 add_executable(${APP_NAME} src/main.cpp)
 
