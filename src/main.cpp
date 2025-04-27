@@ -1,10 +1,7 @@
 #include <array>
 #include <iostream>
-#include <random>
-#include <sstream>
 #include <string>
 #include <string_view>
-#include <array>
 
 #include "enums/CharGroupEnum.h"
 #include "PassgenUtils.h"
@@ -103,9 +100,29 @@ void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
 }
 
 std::string generate_password(const RunningOptions& run_options) {
-  // TODO Add your code here.
-  std::string password;
+  std::string password{};
+  size_t charsPerGroup{run_options.pass_length / run_options.activeGroupsCounter};
 
+  for (size_t idx { 0 }; idx <= GROUPS_AMOUNT; ++idx) {
+    if (password.size() < run_options.pass_length) {
+      if (idx == GROUPS_AMOUNT) {
+        idx = 0;
+        charsPerGroup = (run_options.pass_length - password.size()) / run_options.activeGroupsCounter;
+
+        if (charsPerGroup == 0) charsPerGroup++;
+      }
+    } else {
+      break;
+    }
+
+    if (!run_options.activeGroups[idx]) {
+      continue;
+    }
+
+    password += pu.groupDiceRoller(idx, charsPerGroup);
+  }
+
+  pu.shuffler(password.begin(), password.end());
   return password;
 }
 
