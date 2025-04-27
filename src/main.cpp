@@ -21,7 +21,28 @@ struct RunningOptions {
 };
 
 /// Show help screen and error message
-void usage(std::string_view msg = "") {}
+void usage(std::string_view msg = "") {
+  if (!msg.empty()) {
+    std::cerr << msg << "\n\n";
+  }
+
+  std::cout << "This program generates passwords of specific length\nbased on the selection of groups of characters.\n\n";
+
+  std::cout << "Usage: passgen [<options>]\n"
+               " --len n        Size of the password (default is 7).\n"
+               "  -l, --lower        Add letter in [a-z].\n"
+               "  -u, --upper        Add letter in [A-Z].\n"
+               "  -d, --digits       Add letter in [0-9].\n"
+               "  -o, --logograms    Add letter in [#$%&@^`~].\n"
+               "  -p, --punctuation  Add letter in [.,;:].\n"
+               "  -q, --quotes       Add letter in [\\\"\\'].\n"
+               "  -s, --slashes      Add letter in [\\/|_-].\n"
+               "  -m, --math         Add letter in [*+!?=].\n"
+               "  -b, --braces       Add letter in [{}[]()].\n"
+               "  -a, --all-groups   Add letter from all the above groups.\n"
+               "  -t, --strength     Show password strength classification.\n"
+               "  -h, --help         Show this help screen.\n";
+}
 
 /// Validates and parses the command line arguments
 void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
