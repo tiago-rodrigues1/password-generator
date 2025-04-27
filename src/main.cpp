@@ -6,7 +6,7 @@
 #include "enums/CharGroupEnum.h"
 #include "PassgenUtils.h"
 
-#include "zxcvbn.h"
+#include "zxcvbn-c/zxcvbn.h"
 
 //== Some default values.
 constexpr size_t default_pass_length{ 7 };
