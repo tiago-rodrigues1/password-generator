@@ -1,5 +1,4 @@
-#include <algorithm>
-#include <cstdlib>
+#include <array>
 #include <iostream>
 #include <random>
 #include <sstream>
@@ -7,17 +6,20 @@
 #include <string_view>
 #include <array>
 
-#include "../include/enums/CharGroupEnum.h"
-#include "../include/ArgValidator.h"
+#include "enums/CharGroupEnum.h"
+#include "PassgenUtils.h"
 
 //== Some default values.
 constexpr size_t default_pass_length{ 7 };
+
+PassgenUtils pu{};
 
 /// This struct stores the options passed in via CLI.
 struct RunningOptions {
   size_t pass_length{ default_pass_length };  //!< Password length.
   bool show_password_strength{ false };
   std::array<bool, GROUPS_AMOUNT> activeGroups{};
+  int activeGroupsCounter{ 0 };
 };
 
 /// Show help screen and error message
@@ -46,28 +48,57 @@ void usage(std::string_view msg = "") {
 
 /// Validates and parses the command line arguments
 void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
-  for (size_t i{0}; i < (size_t)argc; i++) {
-    if (argv[i] == "-h" || argv[i] == "--help") {
-     //TODO: print usage() 
-    } else if (argv[i] == "--len") {
-      int lengthValue{atoi(argv[i + 1])};
-      //validate length
+  bool areAllGroupsArgActive{ false };
 
-      run_options.pass_length = lengthValue;
-    } else if (argv[i] == "-t" || argv[i] == "--strength") {
-      //TODO: call password_quality()
-    } else {
-      //TODO: validate if arg is valid
-      ArgValidator validator{};
-      CharGroup result{validator.validateArg(argv[i])};
+  for (size_t i{ 1 }; i < (size_t)argc; ++i) {
+    std::string_view currentArg{ argv[i] };
 
-      if (result == CharGroup::INVALID) {
-        //TODO: mostra erro
+    if (currentArg == "-h" || currentArg == "--help") {
+      usage();
+      exit(EXIT_SUCCESS);
+    } else if (currentArg == "--len") {
+      int lengthValue{pu.getLength(argv[i + 1])};
+      
+      if (lengthValue == 0) {
+        usage(">>> ERROR: Invalid value to --len argument");
+        exit(EXIT_FAILURE);
       }
 
-      run_options.activeGroups[result] = 1;
-      
+      run_options.pass_length = lengthValue;
+      i++;
+    } else if (currentArg == "-t" || currentArg == "--strength") {
+      run_options.show_password_strength = true;
+    } else {
+      CharGroup validationResult{ pu.getArgGroup(currentArg) };
+
+      if (validationResult == CharGroup::INVALID) {
+        std::string errorMsg{">>> ERROR: "};
+        errorMsg.append(currentArg);
+        errorMsg.append(" is not a valid argument");
+
+        usage(errorMsg);
+        exit(EXIT_FAILURE);
+      } else if (validationResult == CharGroup::ALL) {
+        areAllGroupsArgActive = true;
+      }
+
+      run_options.activeGroups[validationResult] = true;
+      run_options.activeGroupsCounter++;
     }
+  }
+
+  if (run_options.activeGroupsCounter == 0) {
+    run_options.activeGroups[CharGroup::LOWER] = true;
+    run_options.activeGroupsCounter = 1;
+  }
+
+  if (areAllGroupsArgActive) {
+    run_options.activeGroups = {true, true, true, true, true, true, true, true, true};
+    run_options.activeGroupsCounter = GROUPS_AMOUNT;
+  } 
+
+  if (run_options.pass_length < (size_t)run_options.activeGroupsCounter) {
+    run_options.pass_length += run_options.activeGroupsCounter - run_options.pass_length;
   }
 }
 
