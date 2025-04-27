@@ -9,11 +9,21 @@ set(APP_NAME "passgen")
 
 # Add include dir
 include_directories(include)
+include_directories(include/zxcvbn-c)
+
+add_library(zxcvbn-c
+    include/zxcvbn-c/zxcvbn.cpp
+)
+
+target_include_directories(zxcvbn-c PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/zxcvbn-c)
 
 # Main App
 add_executable(${APP_NAME} src/main.cpp)
 
+# Link libraries
+target_link_libraries(${APP_NAME} PRIVATE zxcvbn-c)
+
 # Building options
 target_compile_features( ${APP_NAME} PUBLIC cxx_std_17 )
-target_compile_options( ${APP_NAME} PRIVATE -Wall -pedantic -fstandalone-debug -O3)
-# target_compile_options( ${APP_NAME} PRIVATE -Wall -pedantic -fstandalone-debug -g)
+target_compile_options( ${APP_NAME} PRIVATE -Wall -pedantic -O3)
+# target_compile_options( ${APP_NAME} PRIVATE -Wall -pedantic -g)

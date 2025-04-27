@@ -5,7 +5,6 @@
 
 #include "enums/CharGroupEnum.h"
 #include "PassgenUtils.h"
-
 #include "zxcvbn-c/zxcvbn.h"
 
 //== Some default values.
@@ -128,28 +127,22 @@ std::string generate_password(const RunningOptions& run_options) {
   return password;
 }
 
-std::string password_quality(std::string_view password) {
-  // TODO Add your code here
-  //retorna a qualidade da senha atraves de uma função da lib zxcvbn
-  zxcvbn_match_t result = zxcvbn_match(password.data());
-  
-  switch (result.score){
-    std::cout >> "The quality of your password is: ";
-        case 0: 
-          return "Very weak";
+std::string password_quality(std::string password) {
+  double entropy = ZxcvbnMatch(password.c_str(), nullptr, nullptr);
 
-        case 1:
-          return "Weak";
-        
-        case 2:
-          return "Medium ";
+  ZxcvbnUnInit();
 
-        case 3:
-          return "Good";  
-
-        case 4:
-          return "Excellent";
+  if (entropy < 20) {
+    return "Very weak";
+  } else if (entropy >= 20 && entropy < 70) {
+    return "Weak";
+  } else if (entropy >= 70 && entropy < 120) {
+    return "Medium";
+  } else if (entropy >= 120 && entropy < 160) {
+    return "Strong";
   }
+
+  return "Excellent";
 }
 
 int main(int argc, char* argv[]) {
