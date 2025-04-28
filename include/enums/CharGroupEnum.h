@@ -1,3 +1,11 @@
+/**
+ * @file CharGroupEnum.h
+ * @brief Enumerate the character groups available for password generation.
+ *
+ * This file contains the CharGroup enumeration, representing various sets of characters 
+ */
+
+
 #ifndef GROUPS_AMOUNT
 #define GROUPS_AMOUNT 9
 #endif

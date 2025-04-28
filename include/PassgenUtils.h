@@ -13,15 +13,33 @@
 #include "enums/CharGroupEnum.h"
 
 class PassgenUtils {
-private:
 public:
-  PassgenUtils() {}
+  /**
+ * @brief Randomly shuffles elements in a given range.
+ *
+ * Uses a time-based seed to shuffle the elements between two iterators, 
+ * ensuring a different order each time the function is called.
+ *
+ * @tparam ForwardIt Type of the forward iterator.
+ * @param first Iterator pointing to the beginning of the range to shuffle.
+ * @param last Iterator pointing to the end of the range to shuffle.
+ */
 
   template <typename ForwardIt>
   void shuffler(ForwardIt first, ForwardIt last) {
     auto seed{ std::chrono::system_clock::now().time_since_epoch().count() };
     std::shuffle(first, last, std::default_random_engine(seed));
   }
+
+
+  /**
+   * @brief Maps a command-line argument to its corresponding character group.
+   *
+   * Looks up a short or long form argument and returns the associated CharGroup enumeration value.
+   * 
+   * @param arg The argument string to be parsed.
+   * @return The corresponding CharGroup if valid; otherwise, CharGroup::INVALID.
+   */
 
   CharGroup getArgGroup(std::string_view arg) {
     static std::unordered_map<std::string_view, CharGroup> validArgs{
@@ -44,6 +62,18 @@ public:
 
     return CharGroup::INVALID;
   }
+
+
+ /**
+ * @brief Selects a group of characters and returns a randomized substring to generate a password.
+ *
+ * Shuffles the selected character group and returns 'n' characters starting from the current offset.
+ * If the offset exceeds the group size, it resets to zero.
+ *
+ * @param charGroupIdx Index of the character group to use (0 to GROUPS_AMOUNT - 1).
+ * @param n Number of characters to obtain from the selected group.
+ * @return A string containing 'n' characters from the shuffled character group.
+ */
 
   std::string groupDiceRoller(size_t charGroupIdx, size_t n) {
     static std::array<size_t, GROUPS_AMOUNT> charGroupsOffset;
@@ -72,6 +102,16 @@ public:
 
     return chars;
   }
+
+/**
+ * @brief Obtains the password length from a string argument.
+ *
+ * Converts the input string to an integer and validates that it is positive.
+ *
+ * @param lengthArg String containing the desired password length.
+ * @return The parsed length value, or 0 if the input is invalid or non-positive.
+ */
+
 
   int getLength(const char lengthArg[]) {
     if (lengthArg == NULL) {

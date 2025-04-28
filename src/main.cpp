@@ -20,6 +20,15 @@ struct RunningOptions {
   int activeGroupsCounter{ 0 };
 };
 
+/**
+ * @brief Fuction that shows help to the user. 
+ * Shows each one of the groups available
+ *
+ * It shows a massage of help, the user can see arguments, e the right way of write an input
+ * Can be called when there is an error or the user asks for help.
+ *
+ */
+
 /// Show help screen and error message
 void usage(std::string_view msg = "") {
   if (!msg.empty()) {
@@ -43,6 +52,18 @@ void usage(std::string_view msg = "") {
                "  -t, --strength     Show password strength classification.\n"
                "  -h, --help         Show this help screen.\n";
 }
+
+/**
+ * @brief Gets the user input and validates it.
+ *
+ * Parses the command-line arguments provided by the user and updates
+ * the RunningOptions structure. Then validate the argumentsoptions like help,
+ * password length, password strength analysis, and active character groups.
+ *
+ * @param argc Number of command-line arguments.
+ * @param argv Array of command-line argument strings.
+ * @param run_options Struct where the parsed options will be stored.
+ */
 
 /// Validates and parses the command line arguments
 void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
@@ -100,6 +121,18 @@ void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
   }
 }
 
+/**
+ * @brief Generates a password based on the provided options.
+ *
+ * Iterates through the active character groups and appends randomly selected characters 
+ * to build a password of the desired length. Ensures a balanced distribution of character types.
+ * Finally, shuffles the resulting password for added randomness.
+ *
+ * @param run_options Struct containing the user options for the generation of the password.
+ * @return The generated password.
+ */
+
+
 std::string generate_password(const RunningOptions& run_options) {
   std::string password{};
   size_t charsPerGroup{run_options.pass_length / run_options.activeGroupsCounter};
@@ -126,6 +159,17 @@ std::string generate_password(const RunningOptions& run_options) {
   pu.shuffler(password.begin(), password.end());
   return password;
 }
+
+/**
+ * @brief Evaluates the strength of a given password.
+ *
+ * Calculates the password's entropy using the zxcvbn-c library and 
+ * returns a strenght classification of the password.
+ *
+ * @param password The password to evaluate.
+ * @return A string indicating the password's strength.
+ */
+
 
 std::string password_quality(std::string password) {
   double entropy = ZxcvbnMatch(password.c_str(), nullptr, nullptr);
