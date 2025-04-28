@@ -1,15 +1,3 @@
-
-/**
- * @file PassgenUtils.h
- * @brief Breve descrição do que esse arquivo faz.
- *
- * There are many important fuctions to the password generation, like the shuffle,
- * chatacter group selection, argument parsing, and length validation.
- * 
-
- */
-
-
 #ifndef _passgenutils_h
 #define _passgenutils_h
 
@@ -29,16 +17,7 @@ private:
 public:
   PassgenUtils() {}
 
-/**
- * @brief Randomly shuffles elements in a given range.
- *
- * Uses a time-based seed to shuffle the elements between two iterators, 
- * ensuring a different order each time the function is called.
- *
- * @tparam ForwardIt Type of the forward iterator.
- * @param first Iterator pointing to the beginning of the range to shuffle.
- * @param last Iterator pointing to the end of the range to shuffle.
- */
+
 
   template <typename ForwardIt>
   void shuffler(ForwardIt first, ForwardIt last) {

@@ -3,9 +3,9 @@
 #include <string>
 #include <string_view>
 
-#include "../include/enums/CharGroupEnum.h"
-#include "../include/PassgenUtils.h"
-#include "../include/zxcvbn-c/zxcvbn.h"
+#include "enums/CharGroupEnum.h"
+#include "PassgenUtils.h"
+#include "zxcvbn-c/zxcvbn.h"
 
 //== Some default values.
 constexpr size_t default_pass_length{ 7 };
@@ -199,16 +199,6 @@ std::string password_quality(std::string password) {
   return "Excellent";
 }
 
-/**
- * @brief The main function of the password generation program.
- *
- * This program validates the command line arguments, generates a password 
- * according to the provided options, and optionally displays the password's strength.
- *
- * @param argc Number of command line arguments.
- * @param argv Array of strings containing the arguments.
- * @return Program exit code (EXIT_SUCCESS on success).
- */
 
 
 int main(int argc, char* argv[]) {
