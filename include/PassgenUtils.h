@@ -13,11 +13,17 @@
 #include "enums/CharGroupEnum.h"
 
 class PassgenUtils {
-private:
 public:
-  PassgenUtils() {}
-
-
+  /**
+ * @brief Randomly shuffles elements in a given range.
+ *
+ * Uses a time-based seed to shuffle the elements between two iterators, 
+ * ensuring a different order each time the function is called.
+ *
+ * @tparam ForwardIt Type of the forward iterator.
+ * @param first Iterator pointing to the beginning of the range to shuffle.
+ * @param last Iterator pointing to the end of the range to shuffle.
+ */
 
   template <typename ForwardIt>
   void shuffler(ForwardIt first, ForwardIt last) {
@@ -26,14 +32,14 @@ public:
   }
 
 
-/**
- * @brief Maps a command-line argument to its corresponding character group.
- *
- * Looks up a short or long form argument and returns the associated CharGroup enumeration value.
- * 
- * @param arg The argument string to be parsed.
- * @return The corresponding CharGroup if valid; otherwise, CharGroup::INVALID.
- */
+  /**
+   * @brief Maps a command-line argument to its corresponding character group.
+   *
+   * Looks up a short or long form argument and returns the associated CharGroup enumeration value.
+   * 
+   * @param arg The argument string to be parsed.
+   * @return The corresponding CharGroup if valid; otherwise, CharGroup::INVALID.
+   */
 
   CharGroup getArgGroup(std::string_view arg) {
     static std::unordered_map<std::string_view, CharGroup> validArgs{

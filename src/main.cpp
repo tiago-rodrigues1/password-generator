@@ -12,14 +12,6 @@ constexpr size_t default_pass_length{ 7 };
 
 PassgenUtils pu{};
 
-/**
- * @brief Stores options selected by the user.
- *
- * This structure keeps track of the password generation settings such as
- * password length, whether to display password strength, and the 
- * selected character groups.
- */
-
 /// This struct stores the options passed in via CLI.
 struct RunningOptions {
   size_t pass_length{ default_pass_length };  //!< Password length.
@@ -72,8 +64,6 @@ void usage(std::string_view msg = "") {
  * @param argv Array of command-line argument strings.
  * @param run_options Struct where the parsed options will be stored.
  */
-
-
 
 /// Validates and parses the command line arguments
 void validate_arguments(int argc, char* argv[], RunningOptions& run_options) {
@@ -198,8 +188,6 @@ std::string password_quality(std::string password) {
 
   return "Excellent";
 }
-
-
 
 int main(int argc, char* argv[]) {
   RunningOptions run_options;  // Stores incoming arguments.
